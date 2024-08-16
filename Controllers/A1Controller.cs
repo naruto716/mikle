@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using A1.Data;
 using A1.Dtos;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace A1.Controllers
 {
@@ -40,20 +41,42 @@ namespace A1.Controllers
             return Ok(signs);
         }
 
-        [HttpGet("Signs/{searchTerm}")]
-        public IActionResult Signs(string searchTerm)
+        [HttpGet("Signs/{term}")]
+        public IActionResult Signs(string term)
         {
-            var signs = _repo.FindSigns(searchTerm);
+            var signs = _repo.FindSigns(term);
             return Ok(signs);
         }
 
         [HttpGet("SignImage/{id}")]
         public IActionResult SignImage(string id)
         {
-            var imagePath = _repo.GetSignImagePath(id);
-            var image = System.IO.File.OpenRead(imagePath);
-            var contentType = Path.GetExtension(imagePath) == ".png" ? "image/png" : "image/jpeg";
-            return File(image, contentType);
+            var logoFilePath = Path.Combine(Directory.GetCurrentDirectory(), $"SignsImages/{id}");
+            string[] possibleExtensions = { ".png", ".jpg", ".gif" };
+            string filePath = null;
+            foreach (var ext in possibleExtensions)
+            {
+                var tempPath = logoFilePath + ext;
+                if (System.IO.File.Exists(tempPath))
+                {
+                    filePath = tempPath;
+                    break;
+                }
+            }
+
+            if (filePath == null)
+            {
+                return NotFound();
+            }
+
+            var provider = new FileExtensionContentTypeProvider();
+            if (!provider.TryGetContentType(filePath, out string contentType))
+            {
+                contentType = "application/octet-stream";
+            }
+
+            return PhysicalFile(filePath, contentType);
+
         }
 
         [HttpGet("GetComment/{id}")]

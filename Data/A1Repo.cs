@@ -17,10 +17,10 @@ namespace A1.Data
             return _context.Signs.ToList();
         }
 
-        public IEnumerable<Sign> FindSigns(string searchTerm)
+        public IEnumerable<Sign> FindSigns(string term)
         {
             return _context.Signs
-                .Where(s => s.Description.Contains(searchTerm))
+                .Where(s => s.Description.ToLower().Contains(term.ToLower()))
                 .ToList();
         }
 
@@ -42,7 +42,7 @@ namespace A1.Data
                 Name = input.Name,
                 UserComment = input.UserComment,
                 Time = System.DateTime.UtcNow.ToString("yyyyMMddTHHmmssZ"),
-                Ip = "127.0.0.1" // Placeholder for actual IP retrieval
+                Ip = "127.0.0.1"
             };
 
             _context.Comments.Add(comment);

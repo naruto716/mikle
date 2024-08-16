@@ -264,3 +264,4 @@ C:/Users/xye002/OneDrive - The University of Auckland/Documents/work/Teaching/33
 /Users/michael/Downloads/A1Template/obj/Debug/net8.0/A1.pdb
 /Users/michael/Downloads/A1Template/obj/Debug/net8.0/A1.genruntimeconfig.cache
 /Users/michael/Downloads/A1Template/obj/Debug/net8.0/ref/A1.dll
+/Users/michael/Downloads/A1Template/obj/Debug/net8.0/A1.sourcelink.json
